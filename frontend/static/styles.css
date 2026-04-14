@@ -507,6 +507,32 @@ main {
   font-style: italic;
 }
 
+/* Nested list styling for HU content */
+.hu-preview ul ul,
+.hu-preview ol ul,
+.hu-preview ul ol,
+.hu-preview ol ol {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.hu-preview p {
+  margin: 10px 0;
+  line-height: 1.7;
+}
+
+.hu-preview h1:first-child,
+.hu-preview h2:first-child,
+.hu-preview h3:first-child {
+  margin-top: 0;
+}
+
+.hu-preview hr {
+  border: none;
+  border-top: 2px solid #ccffd6;
+  margin: 24px 0;
+}
+
 /* Success Message */
 .success-message {
   background: radial-gradient(circle at top, #d4edda, #ffffff);

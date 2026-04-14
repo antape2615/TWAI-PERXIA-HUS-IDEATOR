@@ -434,81 +434,72 @@ function showQuestions(questions) {
 }
 
 function displayHU(huContent) {
-    // Convert markdown-like content to HTML with better formatting
-    let html = huContent;
-    
-    // Escape HTML to prevent XSS, then process markdown
-    const div = document.createElement('div');
-    div.textContent = html;
-    html = div.innerHTML;
-    
-    // Convert Mermaid code blocks first (preserve them)
-    const mermaidBlocks = [];
-    html = html.replace(/```mermaid\n([\s\S]*?)```/g, (match, code) => {
-        const id = `mermaid-${mermaidBlocks.length}`;
-        mermaidBlocks.push({ id, code });
-        return `<div class="mermaid" id="${id}">${code}</div>`;
-    });
-    
-    // Convert regular code blocks
-    html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
-    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-    
-    // Convert headers (after escaping)
-    html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-    html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-    html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-    
-    // Convert numbered lists
-    html = html.replace(/^\d+\.\s+(.*$)/gim, '<li>$1</li>');
-    
-    // Convert bullet points
-    html = html.replace(/^[-•*]\s+(.*$)/gim, '<li>$1</li>');
-    
-    // Wrap consecutive list items in ul tags
-    html = html.replace(/(<li>.*<\/li>(\n|$))+/g, (match) => {
-        return '<ul>' + match + '</ul>';
-    });
-    
-    // Convert line breaks (but preserve existing HTML)
-    html = html.replace(/\n\n/g, '</p><p>');
-    html = html.replace(/\n(?!<)/g, '<br>');
-    
-    // Wrap content in paragraphs
-    const sections = html.split('</h1>|</h2>|</h3>|</ul>|</ol>|</pre>');
-    html = '<div class="hu-content">' + html + '</div>';
-    
-    // Replace the content
-    huPreview.innerHTML = html;
-    
-    // Load Mermaid if available
-    if (mermaidBlocks.length > 0 && typeof mermaid !== 'undefined') {
-        mermaidBlocks.forEach(({ id, code }) => {
-            try {
-                mermaid.mermaidAPI.render(id + '-svg', code, (svg) => {
-                    const el = document.getElementById(id);
-                    if (el) el.innerHTML = svg;
-                });
-            } catch (e) {
-                console.error('Error rendering mermaid:', e);
-            }
+    // Use the 'marked' library for robust Markdown → HTML conversion
+    if (typeof marked !== 'undefined') {
+        // Configure marked for safe, well-formatted output
+        marked.setOptions({
+            breaks: true,       // Convert \n to <br>
+            gfm: true,          // GitHub-flavored markdown (tables, etc.)
+            headerIds: false,   // No auto-generated IDs on headers
         });
-    } else if (mermaidBlocks.length > 0) {
-        // Add mermaid script if not loaded
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js';
-        script.onload = () => {
-            mermaid.initialize({ startOnLoad: true });
-            mermaidBlocks.forEach(({ id, code }) => {
-                const el = document.getElementById(id);
-                if (el) {
-                    mermaid.mermaidAPI.render(id + '-svg', code, (svg) => {
-                        el.innerHTML = svg;
-                    });
-                }
-            });
+
+        const html = marked.parse(huContent);
+        huPreview.innerHTML = '<div class="hu-content">' + html + '</div>';
+    } else {
+        // Fallback: simple manual conversion if marked didn't load
+        let html = huContent;
+
+        // Escape HTML entities first
+        const tmp = document.createElement('div');
+        tmp.textContent = html;
+        html = tmp.innerHTML;
+
+        // Headers
+        html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+        html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+        html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+        // Bold
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+        // Bullet lists
+        html = html.replace(/^[-•*]\s+(.*$)/gim, '<li>$1</li>');
+        html = html.replace(/(<li>.*<\/li>\n?)+/g, (m) => '<ul>' + m + '</ul>');
+
+        // Numbered lists
+        html = html.replace(/^\d+\.\s+(.*$)/gim, '<li>$1</li>');
+
+        // Line breaks
+        html = html.replace(/\n\n/g, '</p><p>');
+        html = html.replace(/\n/g, '<br>');
+
+        huPreview.innerHTML = '<div class="hu-content"><p>' + html + '</p></div>';
+    }
+
+    // If there are mermaid blocks, try to render them
+    const mermaidEls = huPreview.querySelectorAll('code.language-mermaid');
+    if (mermaidEls.length > 0) {
+        const loadAndRender = () => {
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({ startOnLoad: false });
+                mermaidEls.forEach((el, i) => {
+                    const container = document.createElement('div');
+                    container.className = 'mermaid';
+                    container.textContent = el.textContent;
+                    el.closest('pre').replaceWith(container);
+                });
+                mermaid.init(undefined, '.mermaid');
+            }
         };
-        document.head.appendChild(script);
+
+        if (typeof mermaid !== 'undefined') {
+            loadAndRender();
+        } else {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js';
+            script.onload = loadAndRender;
+            document.head.appendChild(script);
+        }
     }
 }
 
