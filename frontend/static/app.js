@@ -435,15 +435,24 @@ function showQuestions(questions) {
 
 function displayHU(huContent) {
     // Use the 'marked' library for robust Markdown → HTML conversion
-    if (typeof marked !== 'undefined') {
-        // Configure marked for safe, well-formatted output
-        marked.setOptions({
-            breaks: true,       // Convert \n to <br>
-            gfm: true,          // GitHub-flavored markdown (tables, etc.)
-            headerIds: false,   // No auto-generated IDs on headers
-        });
+    const markedLib = (typeof marked !== 'undefined') ? marked : null;
+    const parseFn = markedLib
+        ? (markedLib.parse ? markedLib.parse.bind(markedLib) : (typeof markedLib === 'function' ? markedLib : null))
+        : null;
 
-        const html = marked.parse(huContent);
+    if (parseFn) {
+        // Configure marked — use .use() for v12+, fall back to .setOptions()
+        try {
+            if (markedLib.use) {
+                markedLib.use({ breaks: true, gfm: true });
+            } else if (markedLib.setOptions) {
+                markedLib.setOptions({ breaks: true, gfm: true });
+            }
+        } catch (e) {
+            console.warn('marked config warning:', e);
+        }
+
+        const html = parseFn(huContent);
         huPreview.innerHTML = '<div class="hu-content">' + html + '</div>';
     } else {
         // Fallback: simple manual conversion if marked didn't load
