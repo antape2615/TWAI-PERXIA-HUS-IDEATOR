@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: twai-perxia-ideator
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: RELOAD
+        value: "false"
+      - key: CORS_ORIGINS
+        value: "*"
+      # --- Required secrets (set in Render; do not commit values) ---
+      - key: AZURE_OPENAI_ENDPOINT
+        sync: false
+      - key: AZURE_OPENAI_API_KEY
+        sync: false
+      - key: AZURE_OPENAI_API_VERSION
+        value: "2025-01-01-preview"
+      - key: AZURE_OPENAI_DEPLOYMENT_NAME
+        sync: false
+      - key: AZURE_DEVOPS_ORG
+        value: "https://dev.azure.com/angiepena"
+      - key: AZURE_DEVOPS_PROJECT
+        value: "TORRE IA"
+      - key: AZURE_DEVOPS_PAT
+        sync: false
+      - key: AZURE_DEVOPS_WORK_ITEM_TYPE
+        value: "User Story"
+      - key: AZURE_CLIENT_ID
+        sync: false
+      - key: AZURE_TENANT_ID
+        sync: false

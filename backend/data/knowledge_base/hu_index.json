@@ -1,0 +1,41 @@
+[
+  {
+    "hu_id": "HU-6",
+    "title": "ID: HU-DA-001",
+    "requirement": "ID: HU-DA-001",
+    "keywords": [
+      "hu-da-001"
+    ],
+    "tags": [],
+    "work_item_id": 6,
+    "work_item_url": "https://dev.azure.com/angiepena/TORRE IA/_workitems/edit/6",
+    "created_at": "2025-12-26T10:36:43.196769",
+    "content_file": "HU-6.json"
+  },
+  {
+    "hu_id": "HU-7",
+    "title": "ID: HU-LIB-001",
+    "requirement": "ID: HU-LIB-001",
+    "keywords": [
+      "hu-lib-001"
+    ],
+    "tags": [],
+    "work_item_id": 7,
+    "work_item_url": "https://dev.azure.com/angiepena/TORRE IA/_workitems/edit/7",
+    "created_at": "2025-12-26T10:41:33.936310",
+    "content_file": "HU-7.json"
+  },
+  {
+    "hu_id": "HU-8",
+    "title": "ID: HU-SEG-001",
+    "requirement": "ID: HU-SEG-001",
+    "keywords": [
+      "hu-seg-001"
+    ],
+    "tags": [],
+    "work_item_id": 8,
+    "work_item_url": "https://dev.azure.com/angiepena/TORRE IA/_workitems/edit/8",
+    "created_at": "2026-01-09T10:24:23.311429",
+    "content_file": "HU-8.json"
+  }
+]

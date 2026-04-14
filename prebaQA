@@ -1,0 +1,21 @@
+Flujo:
+Ir a https://demo.playwright.dev/todomvc
+Verificar que el título "todos" esté visible
+Crear una tarea llamada "Comprar leche"
+Crear una tarea llamada "Estudiar Playwright"
+Marcar la primera tarea como completada
+Filtrar por tareas activas
+Verificar que solo se muestre "Estudiar Playwright"
+Requisitos técnicos:
+Usar @playwright/test
+Implementar un fixture personalizado para login (aunque el sitio no lo requiera, simular login por API contra /api/login)
+Usar locators accesibles (getByRole, getByLabel, etc.)
+Configurar retries en playwright.config.ts
+Activar trace: 'on-first-retry'
+Separar el helper de login en un archivo utils/auth.ts
+Usar buenas prácticas (test.describe, beforeEach, etc.)
+Devuelve:
+playwright.config.ts
+tests/todo.spec.ts
+utils/auth.ts que use fixtures,
+locators accesibles (roles), retries y trazas (trace viewer). Incluye un helper para login por API.
