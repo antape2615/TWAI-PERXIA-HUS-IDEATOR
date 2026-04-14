@@ -30,6 +30,9 @@ Thumbs.db
 *.db
 *.sqlite
 
+# Runtime data at repo root (wrong cwd / local only)
+/data/
+
 # Feedback and learning data (contains user feedback, keep local)
 backend/data/feedback.jsonl
 backend/data/learning_data.jsonl
