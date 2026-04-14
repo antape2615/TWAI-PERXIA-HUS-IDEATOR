@@ -98,8 +98,8 @@ La autenticación con MSAL es opcional. Si no la configuras, la aplicación func
    - **Redirect URIs**: `http://localhost:8080` (o tu URL del frontend)
    - **API permissions**: `User.Read` (Microsoft Graph)
 4. Copia el **Application (client) ID** y **Directory (tenant) ID**
-5. Edita `frontend/config.js` y actualiza `AZURE_CLIENT_ID` y `AZURE_TENANT_ID`
-   - O puedes copiar `frontend/config.example.js` a `frontend/config.js` y actualizar los valores
+5. Edita `frontend/static/config.js` y actualiza `AZURE_CLIENT_ID` y `AZURE_TENANT_ID`
+   - O puedes copiar `frontend/static/config.example.js` a `frontend/static/config.js` y actualizar los valores
 
 ### 6. Configurar Azure DevOps PAT
 
@@ -161,7 +161,7 @@ npx http-server frontend -p 8080
 
 El frontend estará disponible en `http://localhost:8080`
 
-**Nota**: Si vas a usar MSAL, asegúrate de configurar `frontend/config.js` antes de iniciar el frontend.
+**Nota**: Si vas a usar MSAL, asegúrate de configurar `frontend/static/config.js` antes de iniciar el frontend.
 
 ### 3. Acceder a la aplicación
 
@@ -311,12 +311,12 @@ Obtiene análisis de desempeño del sistema.
 
 Para configurar las credenciales de Azure AD en el frontend:
 
-1. **Recomendado**: Copia `frontend/config.example.js` a `frontend/config.js`:
+1. **Recomendado**: Copia `frontend/static/config.example.js` a `frontend/static/config.js`:
    ```bash
-   cp frontend/config.example.js frontend/config.js
+   cp frontend/static/config.example.js frontend/static/config.js
    ```
    
-2. Edita `frontend/config.js` y actualiza los valores:
+2. Edita `frontend/static/config.js` y actualiza los valores:
    ```javascript
    window.AZURE_CLIENT_ID = 'tu-client-id-aqui';
    window.AZURE_TENANT_ID = 'tu-tenant-id-aqui';

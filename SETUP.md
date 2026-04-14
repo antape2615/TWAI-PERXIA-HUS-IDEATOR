@@ -86,13 +86,13 @@ Si quieres usar autenticación con Azure AD:
 
 1. Crea una App Registration en Azure AD
 2. Configura Redirect URI: `http://localhost:8080`
-3. Copia `config.example.js` a `config.js`:
+3. Copia `frontend/static/config.example.js` a `frontend/static/config.js`:
 
 ```bash
-cp frontend/config.example.js frontend/config.js
+cp frontend/static/config.example.js frontend/static/config.js
 ```
 
-4. Edita `frontend/config.js`:
+4. Edita `frontend/static/config.js`:
 
 ```javascript
 window.AZURE_CLIENT_ID = 'tu-client-id';
@@ -156,9 +156,9 @@ python3 -m http.server 8080
 - Asegúrate de que el backend está corriendo
 
 ### MSAL no funciona
-- Verifica que `config.js` existe y tiene los valores correctos
+- Verifica que `frontend/static/config.js` existe y tiene los valores correctos
 - Confirma que la Redirect URI en Azure AD coincide con tu URL del frontend
-- Si no necesitas autenticación, puedes dejar `AZURE_CLIENT_ID` vacío en `config.js`
+- Si no necesitas autenticación, puedes dejar `AZURE_CLIENT_ID` vacío en `frontend/static/config.js`
 
 ## Siguiente Paso
 

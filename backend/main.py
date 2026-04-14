@@ -372,14 +372,20 @@ _FRONTEND_DIR = os.path.normpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend")
 )
 _FRONTEND_INDEX = os.path.join(_FRONTEND_DIR, "index.html")
+_STATIC_DIR = os.path.join(_FRONTEND_DIR, "static")
 
 if os.path.isdir(_FRONTEND_DIR) and os.path.isfile(_FRONTEND_INDEX):
+    # Mount assets under /static (folder frontend/static/) so CSS/JS work on Render and with `python -m http.server` from frontend/
+    if os.path.isdir(_STATIC_DIR):
+        app.mount(
+            "/static",
+            StaticFiles(directory=_STATIC_DIR),
+            name="frontend-static",
+        )
+
     @app.get("/")
     async def serve_frontend_index():
         return FileResponse(_FRONTEND_INDEX)
-
-    # Mount after API routes so `/api/*` keeps working
-    app.mount("/", StaticFiles(directory=_FRONTEND_DIR, html=True), name="frontend")
 
 
 if __name__ == "__main__":

@@ -71,9 +71,9 @@ pip install -r requirements.txt
 
 ### MSAL no funciona
 
-1. Verifica que `frontend/config.js` existe y tiene valores correctos
+1. Verifica que `frontend/static/config.js` existe y tiene valores correctos
 2. Confirma que la Redirect URI en Azure AD coincide exactamente con tu URL
-3. Si no necesitas autenticación, deja `AZURE_CLIENT_ID` vacío en `config.js`
+3. Si no necesitas autenticación, deja `AZURE_CLIENT_ID` vacío en `frontend/static/config.js`
 
 ## Problemas Comunes de Python 3.14
 

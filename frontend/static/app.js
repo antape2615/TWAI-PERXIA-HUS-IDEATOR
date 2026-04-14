@@ -2,7 +2,13 @@
 const config = {
     azureClientId: (typeof window !== 'undefined' && window.AZURE_CLIENT_ID) ? window.AZURE_CLIENT_ID : '',
     azureTenantId: (typeof window !== 'undefined' && window.AZURE_TENANT_ID) ? window.AZURE_TENANT_ID : '',
-    apiBaseUrl: (typeof window !== 'undefined' && window.API_BASE_URL) ? window.API_BASE_URL : 'http://localhost:8000'
+    apiBaseUrl: (() => {
+        if (typeof window === 'undefined') return 'http://localhost:8000';
+        if (typeof window.API_BASE_URL === 'string') {
+            return window.API_BASE_URL.replace(/\/$/, '');
+        }
+        return 'http://localhost:8000';
+    })(),
 };
 
 // MSAL Configuration (will be initialized if credentials are provided)
