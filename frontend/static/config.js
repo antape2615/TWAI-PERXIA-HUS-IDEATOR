@@ -9,6 +9,6 @@ if (typeof window.API_BASE_URL === 'undefined') {
     const port = String(window.location.port || '');
     const splitLocalDev =
         window.location.hostname === 'localhost' && port === '8080';
-    window.API_BASE_URL = splitLocalDev ? 'http://localhost:8000' : '';
+    window.API_BASE_URL = splitLocalDev ? 'http://localhost:8005' : '';
 }
 
